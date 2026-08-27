@@ -1,0 +1,61 @@
+From: =?utf-8?B?5byg5LiJ?= <zhangsan@example.com>
+To: =?utf-8?B?5p2O5Zub?= <lisi@example.com>
+Cc: wangwu@example.com
+Subject: =?utf-8?B?5L2g5aW977yM6L+Z5piv5LiA5bCBSFRNTOagvOW8j+a1i+ivlemCruS7tuOAgg==?=
+Date: Tue, 26 Aug 2026 10:30:00 +0800
+Message-ID: <test-001@example.com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="BOUNDARY-MAIN"
+
+--BOUNDARY-MAIN
+Content-Type: multipart/alternative; boundary="BOUNDARY-ALT"
+
+--BOUNDARY-ALT
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
+
+6L+Z5piv5LiA5bCB57qv5paH5pys5rWL6K+V6YKu5Lu277yB5b6I6auY5YW06IO95biu5L2g6aqM6K+B6YKu5Lu26Kej5p6Q55qE5Z+65pys5Yqf6IO944CC
+
+--BOUNDARY-ALT
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head><meta charset="utf-8"></head>
+<body style="font-family: Segoe UI, Microsoft YaHei;">
+<h2 style="color:#5b4ee0;">=E6=82=A8=E5=A5=BD=EF=BC=8C=E6=9D=8E=E5=9B=9B=EF=BC=81</h2>
+<p>=E8=BF=99=E6=98=AF=E4=B8=80=E5=B0=81<b>HTML =E6=A0=BC=E5=BC=8F</b>=E7=9A=84=E6=B5=8B=E8=
+AF=95=E9=82=AE=E4=BB=B6=EF=BC=8C=E7=94=A8=E4=BA=8E=E9=AA=8C=E8=AF=81=E6=B8=B2=E6=9F=93=E6=95=
+=88=E6=9E=9C=E3=80=82</p>
+<ul>
+  <li>=E6=94=AF=E6=8C=81=E5=86=85=E5=B5=8C=E5=9B=BE=E7=89=87=EF=BC=88CID=EF=BC=89</li>
+  <li>=E6=94=AF=E6=8C=81=E9=99=84=E4=BB=B6=E4=B8=8B=E8=BD=BD</li>
+  <li>=E6=94=AF=E6=8C=81=E7=BA=AF=E6=96=87=E6=9C=AC=E5=88=87=E6=8D=A2</li>
+</ul>
+<p><img src="cid:logo001" alt="logo" width="120"></p>
+</body>
+</html>
+
+--BOUNDARY-ALT--
+
+--BOUNDARY-MAIN
+Content-Type: image/png; name="logo.png"
+Content-Transfer-Encoding: base64
+Content-ID: <logo001>
+Content-Disposition: inline; filename="logo.png"
+
+iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGUlEQVR4nGOoyfn/nxLMMGrAqAGj
+BgwXAwB+TuYfTXc8xAAAAABJRU5ErkJggg==
+
+--BOUNDARY-MAIN
+Content-Type: application/pdf; name="report.pdf"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="=?utf-8?B?5rWL6K+V5oql5ZGK?=.pdf"
+
+JVBERi0xLjQKJcTl8uXrp/Og0MTGCjEgMCBvYmoKPDwvVHlwZS9DYXRhbG9nL1BhZ2VzIDIgMCBS
+Pj4KZW5kb2JqCjIgMCBvYmoKPDwvVHlwZS9QYWdlcy9LaWRzWzMgMCBSXS9Db3VudCAxPj4KZW5k
+b2JqCjMgMCBvYmoKPDwvVHlwZS9QYWdlL01lZGlhQm94WzAgMCA1OTUgODQyXS9QYXJlbnQgMiAw
+IFI+PgplbmRvYmoKeHJlZgowIDQKMDAwMDAwMDAwMCA2NTUzNSBmIAp0cmFpbGVyCjw8L1Jvb3Qg
+MSAwIFI+PgpzdGFydHhyZWYKMTMwCiUlRU9GCg==
+
+--BOUNDARY-MAIN--

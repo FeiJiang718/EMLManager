@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EML Manager</title>
+    <link rel="stylesheet" href="/src/ui.css" />
+  </head>
+  <body>
+    <!-- 标题栏 -->
+    <header id="titlebar" data-tauri-drag-region>
+      <div class="tb-brand" data-tauri-drag-region>
+        <span class="tb-logo"></span>
+        <span class="tb-name">EML Manager</span>
+      </div>
+      <div class="tb-controls">
+        <button id="btnTheme" class="tb-btn" title="切换明亮 / 暗黑模式">
+          <svg class="ic-sun" viewBox="0 0 16 16"><circle cx="8" cy="8" r="3.1"/><path d="M8 1.2v1.7M8 13.1v1.7M1.2 8h1.7M13.1 8h1.7M3.3 3.3l1.2 1.2M11.5 11.5l1.2 1.2M12.7 3.3l-1.2 1.2M4.5 11.5l-1.2 1.2"/></svg>
+          <svg class="ic-moon" viewBox="0 0 16 16"><path d="M13.6 9.6A5.6 5.6 0 1 1 6.4 2.4a4.4 4.4 0 0 0 7.2 7.2z"/></svg>
+        </button>
+        <button id="winMin" class="tb-btn" title="最小化">
+          <svg viewBox="0 0 12 12"><path d="M2 6h8" /></svg>
+        </button>
+        <button id="winMax" class="tb-btn" title="最大化 / 还原">
+          <svg viewBox="0 0 12 12"><rect x="2.5" y="2.5" width="7" height="7" rx="1" /></svg>
+        </button>
+        <button id="winClose" class="tb-btn tb-close" title="关闭">
+          <svg viewBox="0 0 12 12"><path d="M3 3l6 6M9 3l-6 6" /></svg>
+        </button>
+      </div>
+    </header>
+
+    <div id="app">
+      <!-- 侧边栏 -->
+      <aside id="sidebar">
+        <section class="side-card">
+          <div class="side-label">我的邮箱</div>
+          <div class="my-addr-row">
+            <div id="myAddrText" class="my-addr" title="用于区分收件 / 发件">未设置</div>
+            <button id="btnSetMyAddr" class="btn ghost sm" title="设置我的邮箱地址">
+              <svg viewBox="0 0 16 16"><path d="M11.3 2.3l2.4 2.4L6 12.4l-3 .6.6-3zM9.5 4.1l2.4 2.4"/></svg>
+            </button>
+          </div>
+        </section>
+
+        <section class="side-card">
+          <div class="side-label">邮件库</div>
+          <div id="libPath" class="lib-path" title="">未选择文件夹</div>
+          <div class="side-actions">
+            <button id="btnPickLib" class="btn primary">
+              <svg viewBox="0 0 16 16"><path d="M2 4.5A1.5 1.5 0 0 1 3.5 3h3l1.5 1.5h4A1.5 1.5 0 0 1 13.5 6v5A1.5 1.5 0 0 1 12 12.5H3.5A1.5 1.5 0 0 1 2 11V4.5z"/></svg>
+              选择库文件夹
+            </button>
+            <button id="btnOpenFiles" class="btn">
+              <svg viewBox="0 0 16 16"><path d="M8 2v8m0 0L5 7m3 3l3-3M3 12.5h10"/></svg>
+              打开 EML 文件
+            </button>
+          </div>
+          <div id="libStats" class="lib-stats"></div>
+        </section>
+
+        <section class="side-card">
+          <div class="side-label">筛选</div>
+          <nav id="filterNav" class="filter-nav">
+            <button class="filter-item active" data-filter="all">
+              <svg viewBox="0 0 16 16"><path d="M2 4h12M4 8h8M6 12h4"/></svg>
+              全部邮件 <span class="count" id="cntAll">0</span>
+            </button>
+            <button class="filter-item" data-filter="inbox">
+              <svg viewBox="0 0 16 16"><path d="M2 9h3l1.5 2h3L11 9h3M2.5 9L4.5 3.5h7L13.5 9v3.5h-11z"/></svg>
+              收件 <span class="count" id="cntInbox">—</span>
+            </button>
+            <button class="filter-item" data-filter="sent">
+              <svg viewBox="0 0 16 16"><path d="M14 2L7 9M14 2L9.5 14l-2.5-5L2 6.5z"/></svg>
+              发件 <span class="count" id="cntSent">—</span>
+            </button>
+            <button class="filter-item" data-filter="atts">
+              <svg viewBox="0 0 16 16"><path d="M12 7l-4.3 4.3a2.5 2.5 0 0 1-3.5-3.5L9 3a1.7 1.7 0 0 1 2.4 2.4L6.7 10a.9.9 0 0 1-1.3-1.3L9.5 4.6"/></svg>
+              含附件 <span class="count" id="cntAtts">0</span>
+            </button>
+          </nav>
+        </section>
+
+        <section class="side-card">
+          <div class="side-label">联系人</div>
+          <nav id="contactList" class="contact-list"></nav>
+        </section>
+
+        <section class="side-card">
+          <div class="side-label">操作</div>
+          <nav class="filter-nav">
+            <button id="btnRescan" class="filter-item">
+              <svg viewBox="0 0 16 16"><path d="M13 8a5 5 0 1 1-1.5-3.6M13 2.5V5h-2.5"/></svg>
+              重新扫描
+            </button>
+            <button id="btnExportAll" class="filter-item">
+              <svg viewBox="0 0 16 16"><path d="M8 9V2m0 0L5.5 4.5M8 2l2.5 2.5M3 10.5V13h10v-2.5"/></svg>
+              导出全部附件
+            </button>
+          </nav>
+        </section>
+
+        <div class="side-foot">纯本地查看 · 不收发邮件</div>
+      </aside>
+
+      <!-- 主区 -->
+      <main id="main">
+        <div id="toolbar">
+          <div class="search-wrap">
+            <svg viewBox="0 0 16 16"><path d="M7 12A5 5 0 1 0 7 2a5 5 0 0 0 0 10zm4.5-1.5L14 13"/></svg>
+            <input id="searchBox" type="text" placeholder="搜索主题、发件人、文件名…" spellcheck="false" />
+          </div>
+          <select id="sortSel" title="排序方式">
+            <option value="date-desc">日期（新 → 旧）</option>
+            <option value="date-asc">日期（旧 → 新）</option>
+            <option value="subject">主题 A → Z</option>
+            <option value="from">发件人 A → Z</option>
+            <option value="size-desc">体积（大 → 小）</option>
+          </select>
+        </div>
+
+        <div id="content">
+          <!-- 列表 -->
+          <section id="listPane">
+            <div id="contactBanner" class="banner hidden">
+              <svg viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5.5 6a5.5 5.5 0 0 1 11 0"/></svg>
+              <span class="banner-label">联系人</span>
+              <b id="contactName"></b>
+              <button id="contactClear" class="banner-x" title="清除筛选">
+                <svg viewBox="0 0 12 12" style="width:10px;height:10px"><path d="M3 3l6 6M9 3l-6 6"/></svg>
+              </button>
+            </div>
+            <div id="listScroll">
+              <div id="listEmpty" class="pane-empty">
+                <svg class="empty-art" viewBox="0 0 64 64"><rect x="8" y="16" width="48" height="34" rx="4"/><path d="M10 20l22 16 22-16"/></svg>
+                <p>选择左侧“邮件库”文件夹<br />或直接打开 .eml 文件</p>
+              </div>
+              <div id="listLoading" class="pane-loading hidden"><div class="spinner"></div><span>正在扫描…</span></div>
+              <ul id="mailList" class="mail-list"></ul>
+            </div>
+          </section>
+
+          <!-- 阅读器 -->
+          <section id="readerPane">
+            <div id="readerEmpty" class="pane-empty">
+              <svg class="empty-art" viewBox="0 0 64 64"><rect x="8" y="16" width="48" height="34" rx="4"/><path d="M10 20l22 16 22-16"/></svg>
+              <p>从列表中选择一封邮件查看</p>
+            </div>
+            <div id="readerLoading" class="pane-loading hidden"><div class="spinner"></div><span>正在解析…</span></div>
+
+            <article id="reader" class="hidden">
+              <header class="rd-head">
+                <h1 id="rdSubject"></h1>
+                <div class="rd-meta">
+                  <div class="rd-row">
+                    <span class="rd-k">发件人</span>
+                    <span id="rdFrom" class="rd-v"></span>
+                  </div>
+                  <div class="rd-row">
+                    <span class="rd-k">收件人</span>
+                    <span id="rdTo" class="rd-v"></span>
+                  </div>
+                  <div class="rd-row rd-cc hidden">
+                    <span class="rd-k">抄送</span>
+                    <span id="rdCc" class="rd-v"></span>
+                  </div>
+                  <div class="rd-row">
+                    <span class="rd-k">时间</span>
+                    <span id="rdDate" class="rd-v"></span>
+                  </div>
+                </div>
+                <div class="rd-toolbar">
+                  <div class="seg" id="viewSeg">
+                    <button data-mode="html" class="active">HTML</button>
+                    <button data-mode="text">纯文本</button>
+                  </div>
+                  <span class="tb-sep"></span>
+                  <button id="btnHeaders" class="btn ghost sm">头信息</button>
+                  <button id="btnReveal" class="btn ghost sm">定位文件</button>
+                  <button id="btnRename" class="btn ghost sm">重命名</button>
+                  <button id="btnMove" class="btn ghost sm">移动到…</button>
+                  <button id="btnDelete" class="btn ghost sm danger">删除</button>
+                </div>
+              </header>
+
+              <div id="attsBar" class="atts-bar hidden">
+                <div class="atts-label">
+                  <svg viewBox="0 0 16 16"><path d="M12 7l-4.3 4.3a2.5 2.5 0 0 1-3.5-3.5L9 3a1.7 1.7 0 0 1 2.4 2.4L6.7 10a.9.9 0 0 1-1.3-1.3L9.5 4.6"/></svg>
+                  附件 <b id="attsCount"></b>
+                </div>
+                <div id="attsList" class="atts-list"></div>
+              </div>
+
+              <div id="bodyWrap">
+                <iframe id="bodyFrame" sandbox="" title="邮件内容"></iframe>
+                <pre id="bodyText" class="hidden"></pre>
+              </div>
+            </article>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- 模态 -->
+    <div id="modalMask" class="hidden">
+      <div id="modal" role="dialog">
+        <h3 id="modalTitle"></h3>
+        <div id="modalBody"></div>
+        <div class="modal-foot">
+          <button id="modalCancel" class="btn">取消</button>
+          <button id="modalOk" class="btn primary danger-hide">确定</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toasts"></div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
